@@ -9,10 +9,13 @@ import { environment } from '@env/environment';
 export class ProductService {
   private http = inject(HttpClient);
 
-  getProducts(category_id?: string) {
+  getProducts(params: { category_id?: string; category_slug?: string }) {
     const url = new URL(`${environment.apiUrl}/api/v1/products`);
-    if (category_id) {
-      url.searchParams.set('categoryId', category_id);
+    if (params.category_id) {
+      url.searchParams.set('categoryId', params.category_id);
+    }
+    if (params.category_slug) {
+      url.searchParams.set('categorySlug', params.category_slug);
     }
     return this.http.get<Product[]>(url.toString());
   }
@@ -20,6 +23,12 @@ export class ProductService {
   getOne(id: string) {
     return this.http.get<Product>(
       `${environment.apiUrl}/api/v1/products/${id}`,
+    );
+  }
+
+  getOneBySlug(slug: string) {
+    return this.http.get<Product>(
+      `${environment.apiUrl}/api/v1/products/slug/${slug}`,
     );
   }
 }
