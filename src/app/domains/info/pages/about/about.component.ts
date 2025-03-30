@@ -19,9 +19,4 @@ export default class AboutComponent {
     const input = event.target as HTMLInputElement;
     this.duration.set(input.valueAsNumber);
   }
-
-  changeMessage(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.message.set(input.value);
-  }
 }
