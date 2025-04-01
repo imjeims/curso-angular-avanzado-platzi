@@ -4,6 +4,7 @@ import {
   afterNextRender,
   signal,
   inject,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { LocationService } from '@shared/services/location/location.service';
 
@@ -11,6 +12,7 @@ import { LocationService } from '@shared/services/location/location.service';
   selector: 'app-location',
   imports: [],
   templateUrl: './location.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LocationComponent {
   locationService = inject(LocationService);
