@@ -2,9 +2,9 @@ import { Component, inject, input, linkedSignal, effect } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ProductService } from '@shared/services/product.service';
 import { CartService } from '@shared/services/cart.service';
-import { Title, Meta } from '@angular/platform-browser';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { environment } from '@env/environment';
+import { MetaTagsService } from '@shared/services/meta-tags.service';
 @Component({
   selector: 'app-product-detail',
   imports: [CommonModule, NgOptimizedImage],
@@ -25,34 +25,17 @@ export default class ProductDetailComponent {
   $cover = linkedSignal(() => this.productRs.value()?.images[0] ?? '');
   private productService = inject(ProductService);
   private cartService = inject(CartService);
-
-  titleService = inject(Title);
-  metaService = inject(Meta);
+  private metaTagsService = inject(MetaTagsService);
 
   constructor() {
     effect(() => {
       const product = this.productRs.value();
       if (product) {
-        this.titleService.setTitle(product.title);
-        this.metaService.updateTag({
-          name: 'description',
-          content: product.description,
-        });
-        this.metaService.updateTag({
-          property: 'og:image',
-          content: product.images[0],
-        });
-        this.metaService.updateTag({
-          property: 'og:title',
-          content: product.title,
-        });
-        this.metaService.updateTag({
-          property: 'og:description',
-          content: product.description,
-        });
-        this.metaService.updateTag({
-          property: 'og:url',
-          content: `${environment.domain}/product/${product.slug}`,
+        this.metaTagsService.updateMetaTags({
+          title: product.title,
+          description: product.description,
+          image: product.images[0],
+          url: `${environment.domain}/product/${product.slug}`,
         });
       }
     });
