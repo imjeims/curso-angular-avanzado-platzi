@@ -55,5 +55,9 @@
     </div>
   </div>
 
-  <app-related [slug]="data.slug"></app-related>
+  @defer (on viewport) {
+    <app-related [slug]="data.slug" />
+  } @placeholder {
+    <p>Loading...</p>
+  }
 }
